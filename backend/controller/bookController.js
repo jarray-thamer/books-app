@@ -2,6 +2,7 @@ import Book from "../models/Book.js";
 import cloudinary from "../config/cloudinary.js";
 
 export const createBook = async (req, res) => {
+  console.log("body: ", req.body, "File : ", req.file);
   try {
     const { title, author, price, language, theme } = req.body;
     let imageUrl = "";

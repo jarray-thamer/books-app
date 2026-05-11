@@ -32,15 +32,14 @@ const BookDetailsPage = () => {
     );
   }
 
-  const handleDelete = () => {
-    // TODO: Delete from backend API
-    console.log("Delete book:", id);
+  const handleDelete = async () => {
+    await fetch(`http://localhost:3000/api/books/${id}`, { method: "DELETE" });
+
     setShowDeleteConfirm(false);
     navigate("/");
   };
 
   const handleUpdate = () => {
-    // TODO: Navigate to edit form with book data
     navigate(`/book-form?id=${id}`);
   };
 
