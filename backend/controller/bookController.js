@@ -1,11 +1,66 @@
 import Book from "../models/Book.js";
 import cloudinary from "../config/cloudinary.js";
 
+// export const createBook = async (req, res) => {
+//   console.log("body: ", req.body, "File : ", req.file);
+//   try {
+//     const { title, author, price, language, theme } = req.body;
+//     let imageUrl = "";
+//     if (req.file) {
+//       const result = await cloudinary.uploader.upload_stream(
+//         {
+//           folder: "books",
+//         },
+//         async (error, result) => {
+//           if (error) throw error;
+
+//           const newBook = await Book.create({
+//             title,
+//             author,
+//             price,
+//             language,
+//             theme,
+//             imageUrl: result.secure_url,
+//           });
+
+//           return res.status(201).json({
+//             success: true,
+//             message: "book created with image",
+//             newBook,
+//           });
+//         },
+//       );
+//       result.end(req.file.buffer);
+//     } else {
+//       const newBook = await Book.create({
+//         title,
+//         author,
+//         price,
+//         language,
+//         theme,
+//       });
+//       return res.status(200).json({
+//         success: true,
+//         message: "Book created with no image",
+//         newBook,
+//       });
+//     }
+//   } catch (error) {
+//     res.status(500).json({
+//       success: false,
+//       message: "something went wrong in creating book:",
+//       error: error.message,
+//     });
+//   }
+// };
+
+// Create book function Oussema
 export const createBook = async (req, res) => {
-  console.log("body: ", req.body, "File : ", req.file);
+  console.log("body : ", req.body, "file : ", req.file);
   try {
-    const { title, author, price, language, theme } = req.body;
+    const { title, author, description, price } = req.body;
     let imageUrl = "";
+
     if (req.file) {
       const result = await cloudinary.uploader.upload_stream(
         {
@@ -13,21 +68,20 @@ export const createBook = async (req, res) => {
         },
         async (error, result) => {
           if (error) throw error;
-
           const newBook = await Book.create({
             title,
             author,
+            description,
             price,
-            language,
-            theme,
-            imageUrl: result.secure_url,
+            imageURL: result.secure_url,
           });
-
-          return res.status(201).json({
-            success: true,
-            message: "book created with image",
-            newBook,
-          });
+          return res
+            .status(201)
+            .json({
+              message: "Book created with image",
+              success: true,
+              newBook,
+            });
         },
       );
       result.end(req.file.buffer);
@@ -35,21 +89,18 @@ export const createBook = async (req, res) => {
       const newBook = await Book.create({
         title,
         author,
+        description,
         price,
-        language,
-        theme,
       });
-      return res.status(200).json({
-        success: true,
-        message: "Book created with no image",
-        newBook,
-      });
+      return res
+        .status(201)
+        .json({ message: "Book created with no image ✅", newBook });
+      console.log(`user create new book as title : ${title} `);
     }
-  } catch (error) {
+  } catch (err) {
     res.status(500).json({
-      success: false,
-      message: "something went wrong in creating book:",
-      error: error.message,
+      message: "Something was wrong, contact IT Support",
+      error: err.message,
     });
   }
 };
