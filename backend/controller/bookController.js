@@ -75,13 +75,11 @@ export const createBook = async (req, res) => {
             price,
             imageURL: result.secure_url,
           });
-          return res
-            .status(201)
-            .json({
-              message: "Book created with image",
-              success: true,
-              newBook,
-            });
+          return res.status(201).json({
+            message: "Book created with image",
+            success: true,
+            newBook,
+          });
         },
       );
       result.end(req.file.buffer);
@@ -127,7 +125,7 @@ export const getById = async (req, res) => {
         message: "Book not found",
       });
     }
-    res.status(200).json({ success: true, book });
+    res.status(200).send({ success: true, book });
   } catch (error) {
     res.status(500).json({
       success: false,

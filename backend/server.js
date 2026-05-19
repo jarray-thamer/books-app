@@ -5,6 +5,7 @@ import bookRouter from "./routes/bookRoutes.js";
 import userRouter from "./routes/userRoutes.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import { JWT_SECRET } from "./constant/cookieName.js";
 
 config();
 
@@ -14,9 +15,9 @@ mongoose
   .catch((e) => console.log("❌", e));
 
 const app = express();
-app.use(cors());
+app.use(cors({ credentials: true }));
 app.use(express.json());
-app.use(cookieParser("your_secret_key"));
+app.use(cookieParser(JWT_SECRET));
 
 app.use("/api/books", bookRouter);
 app.use("/api/users", userRouter);
